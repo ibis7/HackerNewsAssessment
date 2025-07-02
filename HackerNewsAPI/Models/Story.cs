@@ -1,6 +1,6 @@
-namespace HackerNewsAPI
+namespace HackerNewsAPI.Models
 {
-    public class WeatherForecast
+    public class Story
     {
         public DateOnly Date { get; set; }
 
