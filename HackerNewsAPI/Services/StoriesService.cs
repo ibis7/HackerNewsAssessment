@@ -3,20 +3,66 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace HackerNewsAPI.Services
 {
-    public class StoriesService : IStoriesService
+    public class StoriesService(IMemoryCache cache, IHttpClientFactory httpClientFactory, ILogger<StoriesService> logger) : IStoriesService
     {
-        private readonly IMemoryCache _cache;
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient = httpClientFactory.CreateClient("HackerNews");
 
-        public StoriesService(IMemoryCache cache, IHttpClientFactory httpClientFactory)
+        public async Task<List<Story>> GetFilteredStoriesAsync(SearchRequest searchRequest)
         {
-            _cache = cache;
-            _httpClient = httpClientFactory.CreateClient();
+            //Implement search
+            //Implement sorting
+            //Implement pagination
+            //Implement caching
+
+            var stories = new List<Story>();
+            var newestStoriesIds = await GetNewestStoryIdsAsync();
+
+            var filteredStories = newestStoriesIds
+                .Skip(searchRequest.PageSize * (searchRequest.PageNumber - 1))
+                .Take(searchRequest.PageSize)
+                .ToList();
+
+            foreach (var storyId in filteredStories)
+            {
+                var story = await GetStoryDetailsAsync(storyId);
+                if (story != null)
+                {
+                    stories.Add(story);
+                }
+            }
+            return stories;
         }
 
-        public List<Story> GetStories()
+        private async Task<Story?> GetStoryDetailsAsync(int storyId)
         {
-            return new List<Story> { new() };
+            try
+            {
+                var result = await _httpClient.GetFromJsonAsync<Story>($"item{storyId}.json");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "There was an error trying to communicate with HackerNewsAPI");
+                return null;
+            }
+        }
+
+        private async Task<List<int>> GetNewestStoryIdsAsync()
+        {
+            try
+            {
+                var result = await _httpClient.GetFromJsonAsync<List<int>>("newstories.json");
+                if (result == null)
+                {
+                    return [];
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "There was an error trying to communicate with HackerNewsAPI");
+                return [];
+            }
         }
     }
 }
