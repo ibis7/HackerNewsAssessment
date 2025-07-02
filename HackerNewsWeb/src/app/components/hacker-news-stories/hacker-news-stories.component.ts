@@ -1,39 +1,60 @@
-import { Component, OnInit } from '@angular/core';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSortModule, Sort } from '@angular/material/sort';
+import { MatTable, MatTableModule } from '@angular/material/table';
+import { SearchRequest } from '../../models/search-request.model';
 import { StoryModel } from '../../models/story.model';
+import { HackerNewsService } from '../../services/hacker-news.service';
 
 @Component({
   selector: 'app-hacker-news-stories.component',
-  imports: [MatTableModule, MatPaginatorModule],
+  imports: [MatTableModule, MatPaginatorModule, MatSortModule],
   templateUrl: './hacker-news-stories.component.html',
   styleUrl: './hacker-news-stories.component.scss',
 })
 export class HackerNewsStoriesComponent implements OnInit {
-  public myDataArray: StoryModel[] = [
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-    { id: 8 },
-    { id: 9 },
-  ];
+  constructor(private readonly hackerNewsService: HackerNewsService) {}
+
+  @ViewChild(MatTable) table!: MatTable<StoryModel>;
+
+  public stories: StoryModel[] = [];
+  public pageSizeOptions: number[] = [10, 20, 50];
   public displayedColumns: string[] = ['title', 'url'];
+  public request: SearchRequest = {
+    pageSize: 20,
+    pageNumber: 1,
+  };
 
   ngOnInit(): void {
-    this.myDataArray = [
-      { id: 1 },
-      { id: 2 },
-      { id: 3 },
-      { id: 4 },
-      { id: 5 },
-      { id: 6 },
-      { id: 7 },
-      { id: 8 },
-      { id: 9 },
-    ];
+    this.resetRequest();
+    this.reloadData();
+  }
+
+  private resetRequest() {
+    this.request = {
+      pageSize: this.pageSizeOptions[0],
+      pageNumber: 1,
+    };
+  }
+
+  private reloadData() {
+    this.hackerNewsService
+      .getFilteredNews(this.request)
+      .subscribe((response) => {
+        this.stories = response;
+        this.table.renderRows();
+      });
+  }
+
+  public sortChange($event: Sort) {
+    this.request.isSortingAscending = $event.direction === 'asc';
+    this.request.sortedBy = $event.active ?? undefined;
+    this.reloadData();
+  }
+
+  public changePaging($event: PageEvent) {
+    this.request.pageNumber = $event.pageIndex;
+    this.request.pageSize = $event.pageSize;
+    this.reloadData();
   }
 }
