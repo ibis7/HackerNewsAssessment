@@ -18,7 +18,7 @@ namespace HackerNewsAPI.Services
             var newestStoriesIds = await GetNewestStoryIdsAsync();
 
             var filteredStories = newestStoriesIds
-                .Skip(searchRequest.PageSize * (searchRequest.PageNumber - 1))
+                .Skip(searchRequest.PageSize * searchRequest.PageNumber)
                 .Take(searchRequest.PageSize)
                 .ToList();
 

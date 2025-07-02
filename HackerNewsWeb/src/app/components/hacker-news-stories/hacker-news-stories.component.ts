@@ -22,7 +22,7 @@ export class HackerNewsStoriesComponent implements OnInit {
   public displayedColumns: string[] = ['title', 'url'];
   public request: SearchRequest = {
     pageSize: 20,
-    pageNumber: 1,
+    pageNumber: 0,
   };
 
   ngOnInit(): void {
@@ -33,7 +33,7 @@ export class HackerNewsStoriesComponent implements OnInit {
   private resetRequest() {
     this.request = {
       pageSize: this.pageSizeOptions[0],
-      pageNumber: 1,
+      pageNumber: 0,
     };
   }
 
@@ -47,8 +47,12 @@ export class HackerNewsStoriesComponent implements OnInit {
   }
 
   public sortChange($event: Sort) {
-    this.request.isSortingAscending = $event.direction === 'asc';
-    this.request.sortedBy = $event.active ?? undefined;
+    const isAsc = $event.direction === 'asc';
+    const isDesc = $event.direction === 'desc';
+
+    this.request.isSortingAscending = isAsc ? true : isDesc ? false : undefined;
+    this.request.sortedBy = isAsc || isDesc ? $event.active : undefined;
+
     this.reloadData();
   }
 
