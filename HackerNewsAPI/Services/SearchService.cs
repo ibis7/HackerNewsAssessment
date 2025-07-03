@@ -6,7 +6,7 @@ namespace HackerNewsAPI.Services
     public class SearchService(IMemoryCache cache, IStoriesService storiesService, ILogger<SearchService> logger) : ISearchService
     {
         private const string CachedStories = "NewestStories";
-        private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(1);
+        private static readonly TimeSpan CacheDuration = TimeSpan.FromSeconds(30);
 
         public async Task<List<Story>> GetFilteredStoriesAsync(SearchRequest searchRequest)
         {
@@ -17,8 +17,9 @@ namespace HackerNewsAPI.Services
 
         private async Task<List<Story>> GetNewestStoriesAsync()
         {
-            //Implement caching
             //Bypass cache when searching?
+            //Append new ones to cache, always go to API?
+
             if (cache.TryGetValue(CachedStories, out List<Story>? cachedStories) && cachedStories != null)
             {
                 return cachedStories;
@@ -27,7 +28,6 @@ namespace HackerNewsAPI.Services
             {
                 var storyIds = await storiesService.GetNewestStoryIdsAsync();
 
-                //Make this in paralel
                 //Only get the ones we are going to show??
 
                 var storyTasks = storyIds.Select(id => storiesService.GetStoryDetailsAsync(id));
@@ -60,18 +60,12 @@ namespace HackerNewsAPI.Services
             {
                 var isAsc = searchRequest.IsSortingAscending!.Value;
 
-                switch (searchRequest.SortedBy!.ToLower())
+                query = searchRequest.SortedBy! switch
                 {
-                    case "url":
-                        query = isAsc ? query.OrderBy(x => x.Url) : query.OrderByDescending(x => x.Url);
-                        break;
-                    case "title":
-                        query = isAsc ? query.OrderBy(x => x.Title) : query.OrderByDescending(x => x.Title);
-                        break;
-                    default:
-                        break;
-                }
-
+                    SortableColumnsEnum.Url => isAsc ? query.OrderBy(x => x.Url) : query.OrderByDescending(x => x.Url),
+                    SortableColumnsEnum.Title => isAsc ? query.OrderBy(x => x.Title) : query.OrderByDescending(x => x.Title),
+                    _ => query
+                };
             }
 
             query = query

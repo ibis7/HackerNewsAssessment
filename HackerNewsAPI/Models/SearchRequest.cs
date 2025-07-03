@@ -4,7 +4,7 @@
     {
         public string? SearchTerm { get; set; }
 
-        public string? SortedBy { get; set; }
+        public SortableColumnsEnum? SortedBy { get; set; }
         public bool? IsSortingAscending { get; set; }
 
         public int PageSize { get; set; }
