@@ -9,5 +9,15 @@
 
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
+
+        public bool IsSorting()
+        {
+            return SortedBy != null && IsSortingAscending != null;
+        }
+
+        public bool IsSearching()
+        {
+            return !string.IsNullOrWhiteSpace(SearchTerm);
+        }
     }
 }
