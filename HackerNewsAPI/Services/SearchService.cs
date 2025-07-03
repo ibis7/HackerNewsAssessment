@@ -12,11 +12,16 @@ namespace HackerNewsAPI.Services
         {
             var baseStories = await GetNewestStoriesAsync();
 
-            var filteredStories = FilterStories(searchRequest, baseStories);
+            if (searchRequest.IsSearching())
+            {
+                baseStories = FilterStories(searchRequest, baseStories);
+            }
+
+            var orderedStories = OrderStories(searchRequest, baseStories);
 
             return new SearchResponse
             {
-                Stories = filteredStories,
+                Stories = orderedStories,
                 TotalLength = baseStories.Count
             };
         }
@@ -55,17 +60,18 @@ namespace HackerNewsAPI.Services
 
         private static List<Story> FilterStories(SearchRequest searchRequest, List<Story> storiesUnfiltered)
         {
-            var query = storiesUnfiltered.AsQueryable();
+            //Is this the correct way of searching? (maybe there's another endpoint?)
+            var searchTerm = searchRequest.SearchTerm!.Trim();
 
-            if (searchRequest.IsSearching())
-            {
-                //Search for other fields?
-                //Is this the correct way of searching? (maybe there's another endpoint?)
-                var searchTerm = searchRequest.SearchTerm!.Trim();
-                query = query.Where(x => (!string.IsNullOrEmpty(x.Url) && x.Url.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase))
-                    || (!string.IsNullOrEmpty(x.Title) && x.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)));
-            }
+            return storiesUnfiltered.Where(x =>
+                (!string.IsNullOrEmpty(x.Url) && x.Url.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)) ||
+                (!string.IsNullOrEmpty(x.Title) && x.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)))
+                .ToList();
+        }
 
+        private static List<Story> OrderStories(SearchRequest searchRequest, List<Story> stories)
+        {
+            var query = stories.AsQueryable();
 
             if (searchRequest.IsSorting())
             {

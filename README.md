@@ -60,7 +60,11 @@ Front
 	Change hyperlink so it's a button? Change grid to cards?
 Back
 	Unit tests
+	---
+	Typed HTTP client?
+	Add Refit for better unit tests?
 
 ## Hours logged
 6hs- 7/1
 6hs- 7/2
+6hs- 7/3
