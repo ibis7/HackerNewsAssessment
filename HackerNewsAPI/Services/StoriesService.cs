@@ -37,7 +37,7 @@ namespace HackerNewsAPI.Services
         {
             try
             {
-                var result = await _httpClient.GetFromJsonAsync<Story>($"item{storyId}.json");
+                var result = await _httpClient.GetFromJsonAsync<Story>($"item/{storyId}.json");
                 return result;
             }
             catch (Exception ex)

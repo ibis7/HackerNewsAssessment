@@ -51,6 +51,12 @@ Documentation and Samples for the Official HN API. Contribute to HackerNews/API 
 
 ## Other Assumptions
 
+## Pending
+Front
+	Scrollable grid, fixed headers
+	Change hyperlink so it's a button?
+	Unit tests
 
 ## Hours logged
-8hs- 7/1
+6hs- 7/1
+6hs- 7/2
