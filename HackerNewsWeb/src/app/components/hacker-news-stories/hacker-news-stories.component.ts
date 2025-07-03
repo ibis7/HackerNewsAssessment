@@ -3,10 +3,12 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTable, MatTableModule } from '@angular/material/table';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, of } from 'rxjs';
 import { SearchRequest } from '../../models/search-request.model';
+import { SearchResponse } from '../../models/search-response.model';
 import { StoryModel } from '../../models/story.model';
 import { HackerNewsService } from '../../services/hacker-news.service';
 
@@ -20,6 +22,7 @@ import { HackerNewsService } from '../../services/hacker-news.service';
     FormsModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './hacker-news-stories.component.html',
   styleUrl: './hacker-news-stories.component.scss',
@@ -29,14 +32,20 @@ export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatTable) table!: MatTable<StoryModel>;
 
+  private defaultSearchResponse: SearchResponse = {
+    stories: [],
+    totalLength: 0,
+  };
+
   public searchControl = new FormControl('');
-  public stories: StoryModel[] = [];
+  public response: SearchResponse = this.defaultSearchResponse;
   public pageSizeOptions: number[] = [10, 20, 50];
   public displayedColumns: string[] = ['title', 'url'];
   public request: SearchRequest = {
     pageSize: 20,
     pageNumber: 0,
   };
+  public isLoading: boolean = true;
 
   ngOnInit(): void {
     this.resetRequest();
@@ -64,11 +73,21 @@ export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
   }
 
   private searchData() {
+    this.isLoading = true;
+
     this.hackerNewsService
       .getFilteredNews(this.request)
+      .pipe(
+        catchError((error) => {
+          console.error('Error loading news:', error);
+          this.isLoading = false;
+          return of(this.defaultSearchResponse);
+        }),
+      )
       .subscribe((response) => {
-        this.stories = response;
+        this.response = response;
         this.table.renderRows();
+        this.isLoading = false;
       });
   }
 
@@ -77,7 +96,8 @@ export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
     const isDesc = $event.direction === 'desc';
 
     this.request.isSortingAscending = isAsc ? true : isDesc ? false : undefined;
-    this.request.sortedBy = isAsc || isDesc ? $event.active : undefined;
+    this.request.sortedBy =
+      this.request.isSortingAscending != undefined ? $event.active : undefined;
 
     this.searchData();
   }

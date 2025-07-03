@@ -54,10 +54,12 @@ We still want to show the stories without hyperlinks
 
 ## Pending
 Front
-	Scrollable grid, fixed headers
-	Change hyperlink so it's a button?
 	Unit tests
-	Amount of pages left
+	---
+	Scrollable grid, fixed headers, more tweaking
+	Change hyperlink so it's a button? Change grid to cards?
+Back
+	Unit tests
 
 ## Hours logged
 6hs- 7/1

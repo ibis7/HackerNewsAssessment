@@ -8,11 +8,17 @@ namespace HackerNewsAPI.Services
         private const string CachedStories = "NewestStories";
         private static readonly TimeSpan CacheDuration = TimeSpan.FromSeconds(30);
 
-        public async Task<List<Story>> GetFilteredStoriesAsync(SearchRequest searchRequest)
+        public async Task<SearchResponse> GetFilteredStoriesAsync(SearchRequest searchRequest)
         {
             var baseStories = await GetNewestStoriesAsync();
 
-            return FilterStories(searchRequest, baseStories);
+            var filteredStories = FilterStories(searchRequest, baseStories);
+
+            return new SearchResponse
+            {
+                Stories = filteredStories,
+                TotalLength = baseStories.Count
+            };
         }
 
         private async Task<List<Story>> GetNewestStoriesAsync()
@@ -22,10 +28,13 @@ namespace HackerNewsAPI.Services
 
             if (cache.TryGetValue(CachedStories, out List<Story>? cachedStories) && cachedStories != null)
             {
+                logger.LogInformation("Requested from cached stories.");
                 return cachedStories;
             }
             else
             {
+                logger.LogInformation("Cached stories are unavailable/expired.");
+
                 var storyIds = await storiesService.GetNewestStoryIdsAsync();
 
                 //Only get the ones we are going to show??
@@ -38,6 +47,7 @@ namespace HackerNewsAPI.Services
                     .ToList() ?? [];
 
                 cache.Set(CachedStories, stories, CacheDuration);
+                logger.LogInformation("New cached stories have been set.");
 
                 return stories;
             }
@@ -50,6 +60,7 @@ namespace HackerNewsAPI.Services
             if (searchRequest.IsSearching())
             {
                 //Search for other fields?
+                //Is this the correct way of searching? (maybe there's another endpoint?)
                 var searchTerm = searchRequest.SearchTerm!.Trim();
                 query = query.Where(x => (!string.IsNullOrEmpty(x.Url) && x.Url.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase))
                     || (!string.IsNullOrEmpty(x.Title) && x.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)));

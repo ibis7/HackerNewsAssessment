@@ -6,7 +6,7 @@ namespace HackerNewsAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class StoriesController(ISearchService searchService, ILogger<StoriesController> logger) : ControllerBase
+    public class StoriesController(ISearchService searchService) : ControllerBase
     {
         [HttpPost("newest-stories")]
         public async Task<IActionResult> GetNewestStoriesAsync([FromBody] SearchRequest searchRequest)
