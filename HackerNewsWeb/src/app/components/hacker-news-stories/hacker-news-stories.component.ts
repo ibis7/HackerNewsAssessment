@@ -107,9 +107,4 @@ export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
     this.request.pageSize = $event.pageSize;
     this.searchData();
   }
-
-  public searchTextChanged($event: Event) {
-    this.request.searchTerm = '';
-    this.searchData();
-  }
 }

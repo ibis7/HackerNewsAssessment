@@ -50,13 +50,15 @@ GitHub - HackerNews/API: Documentation and Samples for the Official HN API
 Documentation and Samples for the Official HN API. Contribute to HackerNews/API development by creating an account on GitHub.
 
 ## Assumptions
-We still want to show the stories without hyperlinks
+We still want to show the stories without hyperlinks.
+We are only caching to avoid going to the API for every action (sorting, paging), when searching we'll avoid caching to make sure we get the latest ones
 
 ## Pending
 Front
 	Unit tests
 	---
 	Scrollable grid, fixed headers, more tweaking
+	Clear search button
 	Change hyperlink so it's a button? Change grid to cards?
 Back
 	Unit tests

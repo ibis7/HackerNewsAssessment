@@ -28,8 +28,7 @@ namespace HackerNewsAPI.Services
 
         private async Task<List<Story>> GetNewestStoriesAsync()
         {
-            //Bypass cache when searching?
-            //Append new ones to cache, always go to API?
+            //TODO: Append new ones to cache, always go to API?
 
             if (cache.TryGetValue(CachedStories, out List<Story>? cachedStories) && cachedStories != null)
             {
@@ -39,28 +38,32 @@ namespace HackerNewsAPI.Services
             else
             {
                 logger.LogInformation("Cached stories are unavailable/expired.");
-
-                var storyIds = await storiesService.GetNewestStoryIdsAsync();
-
-                //Only get the ones we are going to show??
-
-                var storyTasks = storyIds.Select(id => storiesService.GetStoryDetailsAsync(id));
-                var storyResults = await Task.WhenAll(storyTasks);
-
-                var stories = storyResults
-                    .OfType<Story>()
-                    .ToList() ?? [];
-
-                cache.Set(CachedStories, stories, CacheDuration);
-                logger.LogInformation("New cached stories have been set.");
-
-                return stories;
+                return await GetStoriesWithDetailsFromApiAsync();
             }
+        }
+
+        private async Task<List<Story>> GetStoriesWithDetailsFromApiAsync()
+        {
+            var storyIds = await storiesService.GetNewestStoryIdsAsync();
+
+            //TODO: Only get the ones we are going to show??
+
+            var storyTasks = storyIds.Select(id => storiesService.GetStoryDetailsAsync(id));
+            var storyResults = await Task.WhenAll(storyTasks);
+
+            var stories = storyResults
+                .OfType<Story>()
+                .Where(x => x.HasVisibleData())
+                .ToList() ?? [];
+
+            cache.Set(CachedStories, stories, CacheDuration);
+            logger.LogInformation("New cached stories have been set.");
+
+            return stories;
         }
 
         private static List<Story> FilterStories(SearchRequest searchRequest, List<Story> storiesUnfiltered)
         {
-            //Is this the correct way of searching? (maybe there's another endpoint?)
             var searchTerm = searchRequest.SearchTerm!.Trim();
 
             return storiesUnfiltered.Where(x =>
