@@ -28,6 +28,7 @@ builder.Services.AddHttpClient("HackerNews", client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
+builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<IStoriesService, StoriesService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

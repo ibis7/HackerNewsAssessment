@@ -6,10 +6,8 @@ namespace HackerNewsAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class StoriesController(IStoriesService storiesService, ILogger<StoriesController> logger) : ControllerBase
+    public class StoriesController(ISearchService searchService, ILogger<StoriesController> logger) : ControllerBase
     {
-        private readonly IStoriesService _storiesService = storiesService;
-
         [HttpPost("newest-stories")]
         public async Task<IActionResult> GetNewestStoriesAsync([FromBody] SearchRequest searchRequest)
         {
@@ -18,7 +16,7 @@ namespace HackerNewsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var stories = await _storiesService.GetFilteredStoriesAsync(searchRequest);
+            var stories = await searchService.GetFilteredStoriesAsync(searchRequest);
             return Ok(stories);
         }
     }

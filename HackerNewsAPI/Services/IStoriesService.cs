@@ -4,6 +4,7 @@ namespace HackerNewsAPI.Services
 {
     public interface IStoriesService
     {
-        Task<List<Story>> GetFilteredStoriesAsync(SearchRequest searchRequest);
+        Task<Story?> GetStoryDetailsAsync(int storyId);
+        Task<List<int>> GetNewestStoryIdsAsync();
     }
 }
