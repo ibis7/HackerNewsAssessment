@@ -1,5 +1,5 @@
 using HackerNewsAPI.Models;
-using HackerNewsAPI.Services;
+using HackerNewsAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HackerNewsAPI.Controllers

@@ -1,5 +1,6 @@
 using FluentValidation;
 using HackerNewsAPI.Services;
+using HackerNewsAPI.Services.Interfaces;
 using HackerNewsAPI.Validators;
 using System.Text.Json;
 using System.Text.Json.Serialization;

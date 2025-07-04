@@ -1,4 +1,5 @@
 ﻿using HackerNewsAPI.Models;
+using HackerNewsAPI.Services.Interfaces;
 
 namespace HackerNewsAPI.Services
 {

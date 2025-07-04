@@ -1,6 +1,6 @@
 ﻿using HackerNewsAPI.Models;
 
-namespace HackerNewsAPI.Services
+namespace HackerNewsAPI.Services.Interfaces
 {
     public interface ICachingService
     {

@@ -1,4 +1,5 @@
 ﻿using HackerNewsAPI.Models;
+using HackerNewsAPI.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace HackerNewsAPI.Services
