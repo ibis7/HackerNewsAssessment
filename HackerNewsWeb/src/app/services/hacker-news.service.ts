@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { SearchRequest } from '../models/search-request.model';
@@ -11,7 +11,7 @@ import { SearchResponse } from '../models/search-response.model';
 export class HackerNewsService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private httpClient: HttpClient) {}
+  private httpClient = inject(HttpClient);
 
   public getFilteredNews(
     searchRequest: SearchRequest,
