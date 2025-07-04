@@ -4,6 +4,15 @@
     width: 100%;
   }
 }
+
+.no-results {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
 .full-table-container {
   display: flex;
   position: relative;

@@ -30,7 +30,7 @@ import { HackerNewsService } from '../../services/hacker-news.service';
 export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
   constructor(private readonly hackerNewsService: HackerNewsService) {}
 
-  @ViewChild(MatTable) table!: MatTable<StoryModel>;
+  @ViewChild(MatTable) table?: MatTable<StoryModel>;
 
   private defaultSearchResponse: SearchResponse = {
     stories: [],
@@ -86,7 +86,7 @@ export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
       )
       .subscribe((response) => {
         this.response = response;
-        this.table.renderRows();
+        this.table?.renderRows();
         this.isLoading = false;
       });
   }
