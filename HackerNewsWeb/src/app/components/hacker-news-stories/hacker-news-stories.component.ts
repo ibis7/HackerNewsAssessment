@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,7 +34,7 @@ import { HackerNewsService } from '../../services/hacker-news.service';
   styleUrl: './hacker-news-stories.component.scss',
 })
 export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
-  constructor(private readonly hackerNewsService: HackerNewsService) {}
+  private readonly hackerNewsService = inject(HackerNewsService);
 
   @ViewChild(MatTable) table?: MatTable<StoryModel>;
 
