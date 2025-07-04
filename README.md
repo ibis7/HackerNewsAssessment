@@ -59,9 +59,7 @@ Stories in the newstories endpoint are already sorted, newest first.
 Front
 	Unit tests
 	---
-	Scrollable grid, fixed headers, more tweaking
 	Clear search button
-	Change hyperlink so it's a button? Change grid to cards?
 Back
 	Unit tests
 	---
