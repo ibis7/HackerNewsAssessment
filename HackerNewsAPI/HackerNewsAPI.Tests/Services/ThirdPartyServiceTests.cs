@@ -1,6 +1,6 @@
-namespace HackerNewsAPI.Tests
+namespace HackerNewsAPI.Tests.Services
 {
-    public class Tests
+    public class ThirdPartyServiceTests
     {
         [SetUp]
         public void Setup()
