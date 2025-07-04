@@ -55,16 +55,6 @@ We are only caching to avoid going to the API for every action (sorting, paging,
 We are displaying the news in a grid
 Stories in the newstories endpoint are already sorted, newest first.
 
-## Pending
-Front
-	Unit tests
-	---
-	Clear search button
-Back
-	Unit tests
-	---
-	Typed HTTP client? VS Add Refit for better unit tests?
-
 ## Hours logged
 6hs- 7/1
 6hs- 7/2
