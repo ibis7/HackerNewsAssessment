@@ -51,7 +51,7 @@ Documentation and Samples for the Official HN API. Contribute to HackerNews/API 
 
 ## Assumptions
 We still want to show the stories without hyperlinks.
-We are only caching to avoid going to the API for every action (sorting, paging), when searching we'll avoid caching to make sure we get the latest ones
+We are only caching to avoid going to the API for every action (sorting, paging, searching), after expiration we'll go again
 
 ## Pending
 Front
