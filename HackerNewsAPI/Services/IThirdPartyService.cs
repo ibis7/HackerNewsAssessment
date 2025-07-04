@@ -2,7 +2,7 @@
 
 namespace HackerNewsAPI.Services
 {
-    public interface IStoriesService
+    public interface IThirdPartyService
     {
         Task<Story?> GetStoryDetailsAsync(int storyId);
         Task<List<int>> GetNewestStoryIdsAsync();

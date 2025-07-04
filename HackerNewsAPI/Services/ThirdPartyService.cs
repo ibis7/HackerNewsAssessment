@@ -2,7 +2,7 @@
 
 namespace HackerNewsAPI.Services
 {
-    public class StoriesService(IHttpClientFactory httpClientFactory, ILogger<StoriesService> logger) : IStoriesService
+    public class ThirdPartyService(IHttpClientFactory httpClientFactory, ILogger<ThirdPartyService> logger) : IThirdPartyService
     {
         private readonly HttpClient _httpClient = httpClientFactory.CreateClient("HackerNews");
 

@@ -1,16 +1,12 @@
 ﻿using HackerNewsAPI.Models;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace HackerNewsAPI.Services
 {
-    public class SearchService(IMemoryCache cache, IStoriesService storiesService, ILogger<SearchService> logger) : ISearchService
+    public class SearchService(ICachingService cachingService, ILogger<SearchService> logger) : ISearchService
     {
-        private const string CachedStories = "NewestStories";
-        private static readonly TimeSpan CacheDuration = TimeSpan.FromSeconds(30);
-
         public async Task<SearchResponse> GetFilteredStoriesAsync(SearchRequest searchRequest)
         {
-            var baseStories = await GetNewestStoriesAsync();
+            var baseStories = await cachingService.GetNewestStoriesAsync();
 
             if (searchRequest.IsSearching())
             {
@@ -24,42 +20,6 @@ namespace HackerNewsAPI.Services
                 Stories = orderedStories,
                 TotalLength = baseStories.Count
             };
-        }
-
-        private async Task<List<Story>> GetNewestStoriesAsync()
-        {
-            //TODO: Append new ones to cache, always go to API?
-
-            if (cache.TryGetValue(CachedStories, out List<Story>? cachedStories) && cachedStories != null)
-            {
-                logger.LogInformation("Requested from cached stories.");
-                return cachedStories;
-            }
-            else
-            {
-                logger.LogInformation("Cached stories are unavailable/expired.");
-                return await GetStoriesWithDetailsFromApiAsync();
-            }
-        }
-
-        private async Task<List<Story>> GetStoriesWithDetailsFromApiAsync()
-        {
-            var storyIds = await storiesService.GetNewestStoryIdsAsync();
-
-            //TODO: Only get the ones we are going to show??
-
-            var storyTasks = storyIds.Select(id => storiesService.GetStoryDetailsAsync(id));
-            var storyResults = await Task.WhenAll(storyTasks);
-
-            var stories = storyResults
-                .OfType<Story>()
-                .Where(x => x.HasVisibleData())
-                .ToList() ?? [];
-
-            cache.Set(CachedStories, stories, CacheDuration);
-            logger.LogInformation("New cached stories have been set.");
-
-            return stories;
         }
 
         private static List<Story> FilterStories(SearchRequest searchRequest, List<Story> storiesUnfiltered)

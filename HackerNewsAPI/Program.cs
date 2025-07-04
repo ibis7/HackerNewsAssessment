@@ -35,7 +35,8 @@ builder.Services.AddHttpClient("HackerNews", client =>
 });
 
 builder.Services.AddScoped<ISearchService, SearchService>();
-builder.Services.AddScoped<IStoriesService, StoriesService>();
+builder.Services.AddScoped<ICachingService, CachingService>();
+builder.Services.AddScoped<IThirdPartyService, ThirdPartyService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
