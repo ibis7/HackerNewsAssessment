@@ -4,6 +4,6 @@ namespace HackerNewsAPI.Services
 {
     public interface ISearchService
     {
-        Task<SearchResponse> GetFilteredStoriesAsync(SearchRequest searchRequest);
+        Task<SearchResponse> GetFilteredNewestStoriesAsync(SearchRequest searchRequest);
     }
 }

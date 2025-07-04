@@ -4,7 +4,7 @@ namespace HackerNewsAPI.Services
 {
     public class SearchService(ICachingService cachingService, ILogger<SearchService> logger) : ISearchService
     {
-        public async Task<SearchResponse> GetFilteredStoriesAsync(SearchRequest searchRequest)
+        public async Task<SearchResponse> GetFilteredNewestStoriesAsync(SearchRequest searchRequest)
         {
             var baseStories = await cachingService.GetNewestStoriesAsync();
 

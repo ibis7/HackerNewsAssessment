@@ -16,7 +16,7 @@ namespace HackerNewsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var stories = await searchService.GetFilteredStoriesAsync(searchRequest);
+            var stories = await searchService.GetFilteredNewestStoriesAsync(searchRequest);
             return Ok(stories);
         }
     }

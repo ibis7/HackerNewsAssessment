@@ -51,7 +51,9 @@ Documentation and Samples for the Official HN API. Contribute to HackerNews/API 
 
 ## Assumptions
 We still want to show the stories without hyperlinks.
-We are only caching to avoid going to the API for every action (sorting, paging, searching), after expiration we'll go again
+We are only caching to avoid going to the API for every action (sorting, paging, searching) for getting details again, but we'll go to get at least ids so we make sure we get the newest data
+We are displaying the news in a grid
+Stories in the newstories endpoint are already sorted, newest first.
 
 ## Pending
 Front
@@ -63,10 +65,10 @@ Front
 Back
 	Unit tests
 	---
-	Typed HTTP client?
-	Add Refit for better unit tests?
+	Typed HTTP client? VS Add Refit for better unit tests?
 
 ## Hours logged
 6hs- 7/1
 6hs- 7/2
 6hs- 7/3
+6hs- 7/4
