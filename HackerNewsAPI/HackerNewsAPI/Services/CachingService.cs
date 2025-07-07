@@ -35,11 +35,6 @@ namespace HackerNewsAPI.Services
                 logger.LogInformation("CACHING: Cached stories are all up to date.");
                 return currentCachedStories;
             }
-            else if (newUncachedStoryIds.Count >= currentCachedStories.Count)
-            {
-                logger.LogInformation("CACHING: Cached stories are all too old.");
-                return await GetNewStoriesAsync();
-            }
             else
             {
                 logger.LogInformation("CACHING: Getting information for {count} new stories that are not in cache.", newUncachedStoryIds.Count);

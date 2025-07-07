@@ -3,7 +3,7 @@ using HackerNewsAPI.Services.Interfaces;
 
 namespace HackerNewsAPI.Services
 {
-    public class SearchService(ICachingService cachingService, ILogger<SearchService> logger) : ISearchService
+    public class SearchService(ICachingService cachingService) : ISearchService
     {
         public async Task<SearchResponse> GetFilteredNewestStoriesAsync(SearchRequest searchRequest)
         {
