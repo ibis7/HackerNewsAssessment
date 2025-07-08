@@ -67,6 +67,8 @@ export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
       .pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe((term) => {
         this.request.searchTerm = term ? term : undefined;
+        this.request.pageNumber = 0;
+        this.request.pageSize = this.pageSizeOptions[0];
         this.searchData();
       });
   }
