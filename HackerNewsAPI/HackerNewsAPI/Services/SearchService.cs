@@ -1,59 +1,58 @@
 ﻿using HackerNewsAPI.Models;
 using HackerNewsAPI.Services.Interfaces;
 
-namespace HackerNewsAPI.Services
+namespace HackerNewsAPI.Services;
+
+public class SearchService(ICachingService cachingService) : ISearchService
 {
-    public class SearchService(ICachingService cachingService) : ISearchService
+    public async Task<SearchResponse> GetFilteredNewestStoriesAsync(SearchRequest searchRequest)
     {
-        public async Task<SearchResponse> GetFilteredNewestStoriesAsync(SearchRequest searchRequest)
+        var baseStories = await cachingService.GetNewestStoriesAsync();
+
+        if (searchRequest.IsSearching())
         {
-            var baseStories = await cachingService.GetNewestStoriesAsync();
+            baseStories = FilterStories(searchRequest, baseStories);
+        }
 
-            if (searchRequest.IsSearching())
+        var orderedStories = OrderStories(searchRequest, baseStories);
+
+        return new SearchResponse
+        {
+            Stories = orderedStories,
+            TotalLength = baseStories.Count
+        };
+    }
+
+    private static List<Story> FilterStories(SearchRequest searchRequest, List<Story> storiesUnfiltered)
+    {
+        var searchTerm = searchRequest.SearchTerm!.Trim();
+
+        return storiesUnfiltered.Where(x =>
+            (!string.IsNullOrEmpty(x.Url) && x.Url.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)) ||
+            (!string.IsNullOrEmpty(x.Title) && x.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)))
+            .ToList();
+    }
+
+    private static List<Story> OrderStories(SearchRequest searchRequest, List<Story> stories)
+    {
+        var query = stories.AsQueryable();
+
+        if (searchRequest.IsSorting())
+        {
+            var isAsc = searchRequest.IsSortingAscending!.Value;
+
+            query = searchRequest.SortedBy! switch
             {
-                baseStories = FilterStories(searchRequest, baseStories);
-            }
-
-            var orderedStories = OrderStories(searchRequest, baseStories);
-
-            return new SearchResponse
-            {
-                Stories = orderedStories,
-                TotalLength = baseStories.Count
+                SortableColumnsEnum.Url => isAsc ? query.OrderBy(x => x.Url) : query.OrderByDescending(x => x.Url),
+                SortableColumnsEnum.Title => isAsc ? query.OrderBy(x => x.Title) : query.OrderByDescending(x => x.Title),
+                _ => query
             };
         }
 
-        private static List<Story> FilterStories(SearchRequest searchRequest, List<Story> storiesUnfiltered)
-        {
-            var searchTerm = searchRequest.SearchTerm!.Trim();
+        query = query
+            .Skip(searchRequest.PageSize * searchRequest.PageNumber)
+            .Take(searchRequest.PageSize);
 
-            return storiesUnfiltered.Where(x =>
-                (!string.IsNullOrEmpty(x.Url) && x.Url.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)) ||
-                (!string.IsNullOrEmpty(x.Title) && x.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)))
-                .ToList();
-        }
-
-        private static List<Story> OrderStories(SearchRequest searchRequest, List<Story> stories)
-        {
-            var query = stories.AsQueryable();
-
-            if (searchRequest.IsSorting())
-            {
-                var isAsc = searchRequest.IsSortingAscending!.Value;
-
-                query = searchRequest.SortedBy! switch
-                {
-                    SortableColumnsEnum.Url => isAsc ? query.OrderBy(x => x.Url) : query.OrderByDescending(x => x.Url),
-                    SortableColumnsEnum.Title => isAsc ? query.OrderBy(x => x.Title) : query.OrderByDescending(x => x.Title),
-                    _ => query
-                };
-            }
-
-            query = query
-                .Skip(searchRequest.PageSize * searchRequest.PageNumber)
-                .Take(searchRequest.PageSize);
-
-            return query.ToList();
-        }
+        return query.ToList();
     }
 }

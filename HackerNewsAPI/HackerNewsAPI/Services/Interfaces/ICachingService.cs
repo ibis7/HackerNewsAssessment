@@ -1,9 +1,8 @@
 ﻿using HackerNewsAPI.Models;
 
-namespace HackerNewsAPI.Services.Interfaces
+namespace HackerNewsAPI.Services.Interfaces;
+
+public interface ICachingService
 {
-    public interface ICachingService
-    {
-        Task<List<Story>> GetNewestStoriesAsync();
-    }
+    Task<List<Story>> GetNewestStoriesAsync();
 }

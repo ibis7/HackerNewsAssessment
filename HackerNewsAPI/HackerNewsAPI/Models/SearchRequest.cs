@@ -1,23 +1,22 @@
-﻿namespace HackerNewsAPI.Models
+﻿namespace HackerNewsAPI.Models;
+
+public class SearchRequest
 {
-    public class SearchRequest
+    public string? SearchTerm { get; set; }
+
+    public SortableColumnsEnum? SortedBy { get; set; }
+    public bool? IsSortingAscending { get; set; }
+
+    public int PageSize { get; set; }
+    public int PageNumber { get; set; }
+
+    public bool IsSorting()
     {
-        public string? SearchTerm { get; set; }
+        return SortedBy != null && IsSortingAscending != null;
+    }
 
-        public SortableColumnsEnum? SortedBy { get; set; }
-        public bool? IsSortingAscending { get; set; }
-
-        public int PageSize { get; set; }
-        public int PageNumber { get; set; }
-
-        public bool IsSorting()
-        {
-            return SortedBy != null && IsSortingAscending != null;
-        }
-
-        public bool IsSearching()
-        {
-            return !string.IsNullOrWhiteSpace(SearchTerm);
-        }
+    public bool IsSearching()
+    {
+        return !string.IsNullOrWhiteSpace(SearchTerm);
     }
 }

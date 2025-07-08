@@ -1,9 +1,8 @@
 ﻿using HackerNewsAPI.Models;
 
-namespace HackerNewsAPI.Services.Interfaces
+namespace HackerNewsAPI.Services.Interfaces;
+
+public interface ISearchService
 {
-    public interface ISearchService
-    {
-        Task<SearchResponse> GetFilteredNewestStoriesAsync(SearchRequest searchRequest);
-    }
+    Task<SearchResponse> GetFilteredNewestStoriesAsync(SearchRequest searchRequest);
 }

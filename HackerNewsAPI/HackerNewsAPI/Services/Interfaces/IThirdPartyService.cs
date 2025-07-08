@@ -1,10 +1,9 @@
 ﻿using HackerNewsAPI.Models;
 
-namespace HackerNewsAPI.Services.Interfaces
+namespace HackerNewsAPI.Services.Interfaces;
+
+public interface IThirdPartyService
 {
-    public interface IThirdPartyService
-    {
-        Task<Story?> GetStoryDetailsAsync(int storyId);
-        Task<List<int>> GetNewestStoryIdsAsync();
-    }
+    Task<Story?> GetStoryDetailsAsync(int storyId);
+    Task<List<int>> GetNewestStoryIdsAsync();
 }
