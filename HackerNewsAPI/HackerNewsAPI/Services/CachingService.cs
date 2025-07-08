@@ -9,11 +9,11 @@ public class CachingService(IMemoryCache cache, IThirdPartyService thirdPartySer
     private const string CachedStories = "NewestStories";
     private const int MaxCachedStoriesCount = 500;
     private static readonly TimeSpan BaseCacheDuration = TimeSpan.FromMinutes(20);
-    private static readonly SemaphoreSlim _semaphore = new(1, 1);
+    private static readonly SemaphoreSlim Semaphore = new(1, 1);
 
     public async Task<List<Story>> GetNewestStoriesAsync()
     {
-        await _semaphore.WaitAsync();
+        await Semaphore.WaitAsync();
         try
         {
             if (cache.TryGetValue(CachedStories, out List<Story>? cachedStories) && cachedStories != null)
@@ -29,7 +29,7 @@ public class CachingService(IMemoryCache cache, IThirdPartyService thirdPartySer
         }
         finally
         {
-            _semaphore.Release();
+            Semaphore.Release();
         }
     }
 

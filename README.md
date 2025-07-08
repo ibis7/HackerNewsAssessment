@@ -38,6 +38,7 @@ Using the Hacker News API (https://github.com/HackerNews/API), create a solution
 Your solution must be developed using an Angular front-end app that calls a C# .NET Core back-end restful API.
 
 At a minimum, the front-end UI should consist of:
+
 	- A list of the newest stories
 	- Each list item should include the title and a link to the news article. Watch out for stories that do not have hyperlinks!
 	- A search feature that allows users to find stories
@@ -46,6 +47,7 @@ At a minimum, the front-end UI should consist of:
  
 
 At a minimum, the back-end API should consist of:
+
 	- Usage of dependency injection, it's built-in so why not?
 	- Caching of the newest stories
 	- Automated tests for your code
