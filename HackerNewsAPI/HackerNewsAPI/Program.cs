@@ -23,7 +23,9 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200",
+            "http://hacker-news-front.azurewebsites.net",
+            "https://hacker-news-front.azurewebsites.net")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
