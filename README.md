@@ -1,5 +1,36 @@
 # HackerNewsAssessment
 
+## How to run projects
+
+You can follow these instructions or execute them through Visual Studio or Visual Studio Code.
+
+### Dotnet API
+
+	1. Go to the HackerNewsAPI\HackerNewsAPI folder in a console
+	2. Run 'dotnet run'
+
+### Angular frontend
+
+	1. Go to the HackerNewsWeb folder in a console
+	2. Run 'npm install'
+	3. Run 'npm start'
+
+## How to run tests
+
+You can follow these instructions or test them through Visual Studio or Visual Studio Code.
+
+### Dotnet API
+
+	1. Go to the HackerNewsAPI\HackerNewsAPI.Tests folder in a console
+	2. Run 'dotnet test'
+
+### Angular frontend
+
+	1. Go to the HackerNewsWeb folder in a console
+	2. Run 'npm test'
+
+This will start the Karma test runner and execute all unit tests using Jasmine.
+
 ## Initial Requirements
 
 Using the Hacker News API (https://github.com/HackerNews/API), create a solution that allows users to view the newest stories from the feed.
@@ -7,55 +38,33 @@ Using the Hacker News API (https://github.com/HackerNews/API), create a solution
 Your solution must be developed using an Angular front-end app that calls a C# .NET Core back-end restful API.
 
 At a minimum, the front-end UI should consist of:
-
-	A list of the newest stories
-	Each list item should include the title and a link to the news article. Watch out for stories that do not have hyperlinks!
-	A search feature that allows users to find stories
-	A paging mechanism. While we love reading, 200 stories on the page is a bit much.
-	Automated tests for your code
+	- A list of the newest stories
+	- Each list item should include the title and a link to the news article. Watch out for stories that do not have hyperlinks!
+	- A search feature that allows users to find stories
+	- A paging mechanism. While we love reading, 200 stories on the page is a bit much.
+	- Automated tests for your code
  
 
 At a minimum, the back-end API should consist of:
-
-	Usage of dependency injection, it's built-in so why not?
-	Caching of the newest stories
-	Automated tests for your code
+	- Usage of dependency injection, it's built-in so why not?
+	- Caching of the newest stories
+	- Automated tests for your code
  
-
-If you're up for it, upload your code challenge to an Azure website and send us the link! 
-Azure websites have free trial periods so you don't have to pay a dime :)
-
-Put the final solution in a GitHub repository for our review and send us the link.
-
-Your solution will not be considered for the following reasons:
-
-	Cannot clone solution from GitHub repository provided.
-	The cloned solution will not compile locally.
-	Compiled solution does not run and provide the functionality described above.
-	Automated tests will not run and pass.
-	Use of frameworks other than Angular (Don't use Vue, React, Razor, etc...).
-	Plagiarism of others' code.
-	
-Your solution will be evaluated on:
-
-	Elegance of design.
-	Clean and understandable code.
-	Use of automated tests (integration and unit).
-	Demonstrated understanding of ASP.NET Core, Angular, C#, TypeScript and dependency injection.
-
-We love code reviews and we want see your code so we can review it with you.
-
-GitHub - HackerNews/API: Documentation and Samples for the Official HN API
-
-Documentation and Samples for the Official HN API. Contribute to HackerNews/API development by creating an account on GitHub.
-
 ## Assumptions
-We still want to show the stories without hyperlinks.
-We are only caching to avoid going to the API for every action (sorting, paging, searching) for getting details again, but we'll go to get at least ids so we make sure we get the newest data
-We are displaying the news in a grid
-Stories in the newstories endpoint are already sorted, newest first.
+
+	- We still want to show the stories without hyperlinks.
+	- We are only caching to avoid going to the API for every action (sorting, paging, searching) for getting details again, but we'll always go to get at least ids so we make sure we get the newest data.
+	- We are displaying the news in a grid
+	- Stories in the newstories endpoint are already sorted, newest first.
+	- Stories without url and without title won't be shown.
+	- Pagination, sorting and search happen in the backend.
+	- There's only one search input and that searchs for the fields Title and URL. 
+	- Pagination controls in the UI display a list of possible values (10, 20, 50) and the ability to move between pages.
+	- If after searching there's no data that matches the criteria the grid will be hidden and a message will be displayed instead.
+	- The user can sort by Title or URL.
 
 ## Hours logged
+
 6hs- 7/1
 6hs- 7/2
 6hs- 7/3
