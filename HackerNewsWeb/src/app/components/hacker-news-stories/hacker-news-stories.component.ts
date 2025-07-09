@@ -48,7 +48,7 @@ export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
   public pageSizeOptions: number[] = [10, 20, 50];
   public displayedColumns: string[] = ['title', 'url'];
   public request: SearchRequest = {
-    pageSize: 20,
+    pageSize: this.pageSizeOptions[0],
     pageNumber: 0,
   };
   public isLoading: boolean = true;
@@ -68,7 +68,6 @@ export class HackerNewsStoriesComponent implements OnInit, AfterViewInit {
       .subscribe((term) => {
         this.request.searchTerm = term ? term : undefined;
         this.request.pageNumber = 0;
-        this.request.pageSize = this.pageSizeOptions[0];
         this.searchData();
       });
   }

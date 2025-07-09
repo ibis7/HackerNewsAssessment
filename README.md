@@ -14,6 +14,9 @@ You can follow these instructions or execute them through Visual Studio or Visua
 	1. Go to the HackerNewsWeb folder in a console
 	2. Run 'npm install'
 	3. Run 'npm start'
+	4. You can go now to http://localhost:4200/ and see the running page (make sure the API is also running)
+	
+Note that the Angular CLI requires a minimum Node.js version of v20.19 or v22.12.
 
 ## How to run tests
 
@@ -30,6 +33,7 @@ You can follow these instructions or test them through Visual Studio or Visual S
 	2. Run 'npm test'
 
 This will start the Karma test runner and execute all unit tests using Jasmine.
+Note that the Angular CLI requires a minimum Node.js version of v20.19 or v22.12.
 
 ## Initial Requirements
 
@@ -72,3 +76,5 @@ At a minimum, the back-end API should consist of:
 6hs- 7/3
 6hs- 7/4
 6hs- 7/7
+1hs- 7/8
+1hs- 7/9

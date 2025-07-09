@@ -65,7 +65,8 @@
     <mat-paginator
       class="paginator-sticky"
       [length]="response.totalLength"
-      [pageSize]="pageSizeOptions[0]"
+      [pageSize]="request.pageSize"
+      [pageIndex]="request.pageNumber"
       [pageSizeOptions]="pageSizeOptions"
       (page)="changePaging($event)"
       showFirstLastButtons
